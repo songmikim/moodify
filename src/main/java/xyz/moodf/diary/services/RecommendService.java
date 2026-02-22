@@ -33,8 +33,8 @@ public class RecommendService {
     // 일기 감정과 음악 감정 매치
     static {
         sentiments = new HashMap<>();
-        sentiments.put("분노", java.util.List.of("anger", "angry"));
-        sentiments.put("슬픔", java.util.List.of("sadness"));
+        sentiments.put("분노", List.of("anger", "angry"));
+        sentiments.put("슬픔", List.of("sadness"));
         sentiments.put("상처", List.of("thirst", "sadness"));
         sentiments.put("당황", List.of("confusion", "surprise"));
         sentiments.put("기쁨", List.of("Love", "love", "pink", "joy", "True", "interest"));
