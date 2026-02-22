@@ -228,24 +228,21 @@ public class DiaryInfoService {
         if (StringUtils.hasText(sentiments)) {
             Map<String, Integer> statistics = new HashMap<>();
 
-            for (String sentiment : sentiments.split(",")) {
-                sentiment = sentiments.split(" ")[0];
+            for (String s : sentiments.split(",")) {
+                String sentiment = s.trim();
+                if (sentiment.isEmpty()) continue;
                 int cnt = statistics.getOrDefault(sentiment, 0);
                 statistics.put(sentiment, ++cnt);
             }
 
-            List<String> tmp = new ArrayList<>();
-            for (Map.Entry<String, Integer> entry : statistics.entrySet()) {
-                tmp.add(String.format("%s_%s", entry.getValue(), entry.getKey()));
-            }
+            List<String> ranking = statistics.entrySet().stream()
+                    .sorted((a, b) -> Integer.compare(b.getValue(), a.getValue()))
+                    .map(Map.Entry::getKey)
+                    .toList();
 
-            Collections.sort(tmp, Comparator.reverseOrder());
-
-            List<String> items = tmp.stream().map(s -> s.split("_")[1]).toList();
-
-            item.setStrongest(items.getFirst());  // 가장 강한 감정
+            item.setStrongest(ranking.getFirst());  // 가장 강한 감정
             item.setStatistics(statistics);
-            item.setRanking(items);  // 순위별 감정 목록
+            item.setRanking(ranking);  // 순위별 감정 목록
         }
     }
 
